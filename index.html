@@ -4,53 +4,108 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Convite de Aniversário</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet" />
+
   <style>
-    body {
-      margin: 0;
+    body, html {
+      margin: 0; padding: 0; height: 100%;
       font-family: 'Segoe UI', sans-serif;
-      background: #fff; /* Fundo branco */
-      color: #333;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 2rem;
-      text-align: center;
+      background: linear-gradient(to top, #0b274f 0%, #fb8c00 60%, #fceabb 100%);
+      color: #0056b3;
       overflow-x: hidden;
       position: relative;
     }
-    .convite {
-      background: rgba(255, 255, 255, 0.95);
-      padding: 2rem;
-      border-radius: 20px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-      max-width: 400px;
-      width: 100%;
+
+    /* Sol no canto superior esquerdo */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      width: 100px;
+      height: 100px;
+      background: radial-gradient(circle at center, #FFD93B, #FCA311);
+      border-radius: 50%;
+      box-shadow: 0 0 50px 20px rgba(252,163,17,0.7);
+      z-index: 0;
+    }
+
+    /* Container do texto Bday com fundo nuvens */
+    #bday-central {
       position: relative;
+      font-family: 'Dancing Script', cursive;
+      font-size: 6rem;
+      color: #0056b3; /* azul */
+      text-align: center;
+      margin: 3rem 1rem 4rem 1rem;
+      user-select: none;
+      text-shadow:
+        0 0 5px #FFD700,
+        0 0 10px #FFD700,
+        0 0 20px #FFD700,
+        0 0 30px #FFD700,
+        0 0 40px #FFD700; /* contorno dourado brilhante estilo glitter */
+
       z-index: 10;
     }
-    h1 {
-      color: #007BFF; /* azul */
-      margin-bottom: 0.5rem;
-      font-size: 2rem;
+
+    /* Fundo nuvens estilo fumaça atrás do texto */
+    #bday-central::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 400px;
+      height: 150px;
+      background: url('data:image/svg+xml;utf8,<svg width="400" height="150" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="g" cx="50%" cy="50%" r="50%" fx="50%" fy="50%"><stop offset="0%" stop-color="white" stop-opacity="0.15"/><stop offset="100%" stop-color="white" stop-opacity="0"/></radialGradient></defs><ellipse cx="100" cy="75" rx="80" ry="40" fill="url(%23g)"/><ellipse cx="200" cy="75" rx="80" ry="40" fill="url(%23g)"/><ellipse cx="300" cy="75" rx="80" ry="40" fill="url(%23g)"/></svg>') no-repeat center center;
+      background-size: contain;
+      filter: blur(8px);
+      opacity: 0.2;
+      transform: translate(-50%, -50%);
+      z-index: -1;
+      pointer-events: none;
     }
+
+    /* Convite abaixo do texto */
+    #convite {
+      position: relative;
+      max-width: 600px;
+      margin: 0 auto 3rem auto;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      padding: 2rem;
+      text-align: center;
+      color: #0056b3;
+      z-index: 10;
+    }
+
+    #convite h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: #0056b3;
+    }
+
     .contador {
       font-size: 1.3rem;
       font-weight: bold;
-      color: #007BFF; /* azul */
+      color: #0056b3;
       margin-bottom: 1.5rem;
       letter-spacing: 2px;
     }
+
     .detalhes {
       margin-top: 1rem;
       font-size: 1.1rem;
       line-height: 1.6;
-      color: #444;
+      color: #003366;
     }
+
     .botao {
       margin-top: 2rem;
       display: inline-block;
-      background-color: #007BFF; /* azul */
+      background-color: #0056b3;
       color: white;
       padding: 0.8rem 1.5rem;
       border-radius: 10px;
@@ -59,11 +114,13 @@
       transition: background-color 0.3s ease;
       cursor: pointer;
       user-select: none;
+      margin-right: 10px;
     }
+
     .botao:hover {
-      background-color: #0056b3; /* azul escuro */
+      background-color: #003366;
     }
-    /* Área dos botões de reação */
+
     .reacoes-container {
       margin-top: 2rem;
       display: flex;
@@ -71,6 +128,7 @@
       gap: 15px;
       flex-wrap: wrap;
     }
+
     .reacao-btn {
       font-size: 2rem;
       cursor: pointer;
@@ -79,10 +137,11 @@
       transition: transform 0.2s ease;
       user-select: none;
     }
+
     .reacao-btn:hover {
       transform: scale(1.3);
     }
-    /* Contador das reações */
+
     .contador-reacoes {
       margin-top: 1rem;
       display: flex;
@@ -90,9 +149,9 @@
       gap: 30px;
       font-weight: bold;
       font-size: 1.1rem;
-      color: #007BFF;
+      color: #0056b3;
     }
-    /* Estilo da reação animada que aparece */
+
     .animacao-reacao {
       position: fixed;
       font-size: 2.5rem;
@@ -102,56 +161,48 @@
       user-select: none;
       text-shadow: 0 0 5px #00000099;
     }
+
     @keyframes subirFade {
-      0% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-      100% {
-        opacity: 0;
-        transform: translateY(-100px) scale(1.5);
-      }
+      0% { opacity: 1; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(-100px) scale(1.5); }
     }
   </style>
 </head>
 <body>
-  <div class="convite">
-    <h1>🎉✨ Julho está logo ali... é mês de comemorar o Bday do Pedro Bibiano! ✨🎉</h1>
 
-    <!-- Contador regressivo -->
-    <div class="contador" id="contador">
-      Carregando contador...
-    </div>
+  <div id="bday-central">Bday do Bibiano! 🍻</div>
+
+  <div id="convite">
+    <h1>🎉✨ Julho está logo ali... é mês de comemorar junto comigo! ✨🎉</h1>
+
+    <div class="contador" id="contador">Carregando contador...</div>
 
     <p style="margin-top: 1rem;">
-      🔥 <strong>Estilo Americano:</strong> Cada um traz seu narguilé e sua bebida preferida!<br/>
+      🔥 <strong>Estilo Americano:</strong> Cada um traz meio quilo de carne, seu narguile e aquela bebida que não pode faltar!<br/>
       <em>(Só assim garantimos a farra completa! 😄💨🍻)</em>
     </p>
 
-    <div class="detalhes" style="margin-top: 1.5rem;">
+    <div class="detalhes">
       📅 <strong>Data:</strong> 19 de Julho de 2025 - Sábado <br/>
       🕒 <strong>Horário:</strong> Das 14h00 às 21h00<br/>
       📍 <strong>Local:</strong> Rua Prudente de Morais, 554, Ferraz de Vasconcelos - SP
     </div>
 
     <p style="margin-top: 1.5rem;">
-      Se você recebeu esse convite, é porque é muito especial pra mim.<br/>
+      Se recebeu esse convite, já sabe: você é importante demais pra essa festa!<br/>
       Então, conto com a sua presença para prestigiar meu aniversário com muito forró, pagode e funk! 🎶💃🏽🕺🏽
     </p>
 
-    <!-- Botões principais -->
-    <a class="botao" href="https://wa.me/5511953305987?text=Pedr%C3%A3o%2C%20confirmo%20a%20presen%C3%A7a%20vamos%20com%20tudo%20amigo%21" target="_blank" rel="noopener noreferrer">✅ Confirmar Presença</a>
+    <a class="botao" href="https://wa.me/5511953305987?text=Pedr%C3%A3o%2C%20confirmo%20a%20presen%C3%A7a%20vamos%20com%20tudo%20amigo%21" target="_blank">✅ Confirmar Presença</a>
 
-    <a class="botao" href="https://www.google.com/maps/dir/?api=1&destination=Rua%20Prudente%20de%20Morais%2C%20554%2C%20Ferraz%20de%20Vasconcelos%20-%20SP" target="_blank" rel="noopener noreferrer" style="margin-left: 10px;">📍 Como Chegar</a>
+    <a class="botao" href="https://www.google.com/maps/dir/?api=1&destination=Rua%20Prudente%20de%20Morais%2C%20554%2C%20Ferraz%20de%20Vasconcelos%20-%20SP" target="_blank">📍 Como Chegar</a>
 
-    <!-- Reações animadas -->
-    <div class="reacoes-container" style="margin-top: 2rem;">
-      <button class="reacao-btn" data-emoji="🔥" aria-label="Fogo">🔥</button>
-      <button class="reacao-btn" data-emoji="🎉" aria-label="Festa">🎉</button>
-      <button class="reacao-btn" data-emoji="🕺" aria-label="Dançarino">🕺</button>
+    <div class="reacoes-container">
+      <button class="reacao-btn" data-emoji="🔥">🔥</button>
+      <button class="reacao-btn" data-emoji="🎉">🎉</button>
+      <button class="reacao-btn" data-emoji="🕺">🕺</button>
     </div>
 
-    <!-- Contadores das reações -->
     <div class="contador-reacoes" id="contadorReacoes">
       🔥 <span id="countFogo">0</span>
       🎉 <span id="countFesta">0</span>
@@ -160,7 +211,6 @@
   </div>
 
   <script>
-    // Contador regressivo
     function atualizarContador() {
       const festa = new Date('2025-07-19T14:00:00');
       const agora = new Date();
@@ -177,50 +227,35 @@
       const minutos = Math.floor((diff / (1000 * 60)) % 60);
       const segundos = Math.floor((diff / 1000) % 60);
 
-      document.getElementById('contador').innerHTML = 
+      document.getElementById('contador').innerHTML =
         `${dias}d : ${horas}h : ${minutos}m : ${segundos}s`;
     }
 
-    atualizarContador();
-    const timer = setInterval(atualizarContador, 1000);
-
-    // Contadores das reações
-    const contadores = {
+    const contadores = JSON.parse(localStorage.getItem('reacoes')) || {
       '🔥': 0,
       '🎉': 0,
       '🕺': 0,
     };
 
-    // Atualiza o contador visual
     function atualizarContadores() {
       document.getElementById('countFogo').textContent = contadores['🔥'];
       document.getElementById('countFesta').textContent = contadores['🎉'];
       document.getElementById('countDancarino').textContent = contadores['🕺'];
+      localStorage.setItem('reacoes', JSON.stringify(contadores));
     }
 
-    // Função para criar a animação da reação
     function animarReacao(emoji) {
       const anim = document.createElement('div');
       anim.classList.add('animacao-reacao');
       anim.textContent = emoji;
-
-      // Posição aleatória horizontal dentro da janela
       const x = Math.random() * (window.innerWidth - 50) + 25;
-      // Começa perto do rodapé
       const y = window.innerHeight - 100;
-
       anim.style.left = `${x}px`;
       anim.style.top = `${y}px`;
-
       document.body.appendChild(anim);
-
-      // Remove após animação acabar (2s)
-      setTimeout(() => {
-        anim.remove();
-      }, 2000);
+      setTimeout(() => anim.remove(), 2000);
     }
 
-    // Ligar os botões
     document.querySelectorAll('.reacao-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const emoji = btn.getAttribute('data-emoji');
@@ -229,10 +264,14 @@
         animarReacao(emoji);
       });
     });
+
+    atualizarContadores();
+    atualizarContador();
+    const timer = setInterval(atualizarContador, 1000);
   </script>
+
 </body>
 </html>
-
 
 
 
