@@ -1,277 +1,403 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Convite de Aniversário</title>
-
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet" />
-
-  <style>
-    body, html {
-      margin: 0; padding: 0; height: 100%;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to top, #0b274f 0%, #fb8c00 60%, #fceabb 100%);
-      color: #0056b3;
-      overflow-x: hidden;
-      position: relative;
-    }
-
-    /* Sol no canto superior esquerdo */
-    body::before {
-      content: "";
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      width: 100px;
-      height: 100px;
-      background: radial-gradient(circle at center, #FFD93B, #FCA311);
-      border-radius: 50%;
-      box-shadow: 0 0 50px 20px rgba(252,163,17,0.7);
-      z-index: 0;
-    }
-
-    /* Container do texto Bday com fundo nuvens */
-    #bday-central {
-      position: relative;
-      font-family: 'Dancing Script', cursive;
-      font-size: 6rem;
-      color: #0056b3; /* azul */
-      text-align: center;
-      margin: 3rem 1rem 4rem 1rem;
-      user-select: none;
-      text-shadow:
-        0 0 5px #FFD700,
-        0 0 10px #FFD700,
-        0 0 20px #FFD700,
-        0 0 30px #FFD700,
-        0 0 40px #FFD700; /* contorno dourado brilhante estilo glitter */
-
-      z-index: 10;
-    }
-
-    /* Fundo nuvens estilo fumaça atrás do texto */
-    #bday-central::before {
-      content: "";
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 400px;
-      height: 150px;
-      background: url('data:image/svg+xml;utf8,<svg width="400" height="150" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="g" cx="50%" cy="50%" r="50%" fx="50%" fy="50%"><stop offset="0%" stop-color="white" stop-opacity="0.15"/><stop offset="100%" stop-color="white" stop-opacity="0"/></radialGradient></defs><ellipse cx="100" cy="75" rx="80" ry="40" fill="url(%23g)"/><ellipse cx="200" cy="75" rx="80" ry="40" fill="url(%23g)"/><ellipse cx="300" cy="75" rx="80" ry="40" fill="url(%23g)"/></svg>') no-repeat center center;
-      background-size: contain;
-      filter: blur(8px);
-      opacity: 0.2;
-      transform: translate(-50%, -50%);
-      z-index: -1;
-      pointer-events: none;
-    }
-
-    /* Convite abaixo do texto */
-    #convite {
-      position: relative;
-      max-width: 600px;
-      margin: 0 auto 3rem auto;
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 20px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-      padding: 2rem;
-      text-align: center;
-      color: #0056b3;
-      z-index: 10;
-    }
-
-    #convite h1 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-      color: #0056b3;
-    }
-
-    .contador {
-      font-size: 1.3rem;
-      font-weight: bold;
-      color: #0056b3;
-      margin-bottom: 1.5rem;
-      letter-spacing: 2px;
-    }
-
-    .detalhes {
-      margin-top: 1rem;
-      font-size: 1.1rem;
-      line-height: 1.6;
-      color: #003366;
-    }
-
-    .botao {
-      margin-top: 2rem;
-      display: inline-block;
-      background-color: #0056b3;
-      color: white;
-      padding: 0.8rem 1.5rem;
-      border-radius: 10px;
-      text-decoration: none;
-      font-weight: bold;
-      transition: background-color 0.3s ease;
-      cursor: pointer;
-      user-select: none;
-      margin-right: 10px;
-    }
-
-    .botao:hover {
-      background-color: #003366;
-    }
-
-    .reacoes-container {
-      margin-top: 2rem;
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      flex-wrap: wrap;
-    }
-
-    .reacao-btn {
-      font-size: 2rem;
-      cursor: pointer;
-      background: transparent;
-      border: none;
-      transition: transform 0.2s ease;
-      user-select: none;
-    }
-
-    .reacao-btn:hover {
-      transform: scale(1.3);
-    }
-
-    .contador-reacoes {
-      margin-top: 1rem;
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-      font-weight: bold;
-      font-size: 1.1rem;
-      color: #0056b3;
-    }
-
-    .animacao-reacao {
-      position: fixed;
-      font-size: 2.5rem;
-      pointer-events: none;
-      animation: subirFade 2s forwards;
-      z-index: 9999;
-      user-select: none;
-      text-shadow: 0 0 5px #00000099;
-    }
-
-    @keyframes subirFade {
-      0% { opacity: 1; transform: translateY(0) scale(1); }
-      100% { opacity: 0; transform: translateY(-100px) scale(1.5); }
-    }
-  </style>
-</head>
-<body>
-
-  <div id="bday-central">Bday do Bibiano! 🍻</div>
-
-  <div id="convite">
-    <h1>🎉✨ Julho está logo ali... é mês de comemorar junto comigo! ✨🎉</h1>
-
-    <div class="contador" id="contador">Carregando contador...</div>
-
-    <p style="margin-top: 1rem;">
-      🔥 <strong>Estilo Americano:</strong> Cada um traz meio quilo de carne, seu narguile e aquela bebida que não pode faltar!<br/>
-      <em>(Só assim garantimos a farra completa! 😄💨🍻)</em>
-    </p>
-
-    <div class="detalhes">
-      📅 <strong>Data:</strong> 19 de Julho de 2025 - Sábado <br/>
-      🕒 <strong>Horário:</strong> Das 14h00 às 21h00<br/>
-      📍 <strong>Local:</strong> Rua Prudente de Morais, 554, Ferraz de Vasconcelos - SP
-    </div>
-
-    <p style="margin-top: 1.5rem;">
-      Se recebeu esse convite, já sabe: você é importante demais pra essa festa!<br/>
-      Então, conto com a sua presença para prestigiar meu aniversário com muito forró, pagode e funk! 🎶💃🏽🕺🏽
-    </p>
-
-    <a class="botao" href="https://wa.me/5511953305987?text=Pedr%C3%A3o%2C%20confirmo%20a%20presen%C3%A7a%20vamos%20com%20tudo%20amigo%21" target="_blank">✅ Confirmar Presença</a>
-
-    <a class="botao" href="https://www.google.com/maps/dir/?api=1&destination=Rua%20Prudente%20de%20Morais%2C%20554%2C%20Ferraz%20de%20Vasconcelos%20-%20SP" target="_blank">📍 Como Chegar</a>
-
-    <div class="reacoes-container">
-      <button class="reacao-btn" data-emoji="🔥">🔥</button>
-      <button class="reacao-btn" data-emoji="🎉">🎉</button>
-      <button class="reacao-btn" data-emoji="🕺">🕺</button>
-    </div>
-
-    <div class="contador-reacoes" id="contadorReacoes">
-      🔥 <span id="countFogo">0</span>
-      🎉 <span id="countFesta">0</span>
-      🕺 <span id="countDancarino">0</span>
-    </div>
-  </div>
-
-  <script>
-    function atualizarContador() {
-      const festa = new Date('2025-07-19T14:00:00');
-      const agora = new Date();
-      const diff = festa - agora;
-
-      if (diff <= 0) {
-        document.getElementById('contador').innerHTML = '🎉 A festa já começou! 🎉';
-        clearInterval(timer);
-        return;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Convite de Aniversário</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        font-family: "Segoe UI", sans-serif;
+        background: linear-gradient(
+          to top,
+          #0b274f 0%,
+          #fb8c00 60%,
+          #fceabb 100%
+        );
+        color: #0056b3;
+        overflow-x: hidden;
+        position: relative;
       }
 
-      const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const horas = Math.floor((diff / (1000 * 60 * 60)) % 24);
-      const minutos = Math.floor((diff / (1000 * 60)) % 60);
-      const segundos = Math.floor((diff / 1000) % 60);
+      body::before {
+        content: "";
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        width: 100px;
+        height: 100px;
+        background: radial-gradient(circle at center, #ffd93b, #fca311);
+        border-radius: 50%;
+        box-shadow: 0 0 50px 20px rgba(252, 163, 17, 0.7);
+        z-index: 0;
+      }
 
-      document.getElementById('contador').innerHTML =
-        `${dias}d : ${horas}h : ${minutos}m : ${segundos}s`;
-    }
+      #bday-central {
+        position: relative;
+        font-family: "Dancing Script", cursive;
+        font-size: 6rem;
+        color: #0056b3;
+        text-align: center;
+        margin: 3rem 1rem 4rem 1rem;
+        user-select: none;
+        text-shadow: 0 0 5px #ffd700, 0 0 10px #ffd700, 0 0 20px #ffd700,
+          0 0 30px #ffd700, 0 0 40px #ffd700;
+        z-index: 10;
+      }
 
-    const contadores = JSON.parse(localStorage.getItem('reacoes')) || {
-      '🔥': 0,
-      '🎉': 0,
-      '🕺': 0,
-    };
+      #bday-central::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 400px;
+        height: 150px;
+        background: url('data:image/svg+xml;utf8,<svg width="400" height="150" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="g" cx="50%" cy="50%" r="50%" fx="50%" fy="50%"><stop offset="0%" stop-color="white" stop-opacity="0.15"/><stop offset="100%" stop-color="white" stop-opacity="0"/></radialGradient></defs><ellipse cx="100" cy="75" rx="80" ry="40" fill="url(%23g)"/><ellipse cx="200" cy="75" rx="80" ry="40" fill="url(%23g)"/><ellipse cx="300" cy="75" rx="80" ry="40" fill="url(%23g)"/></svg>')
+          no-repeat center center;
+        background-size: contain;
+        filter: blur(8px);
+        opacity: 0.2;
+        transform: translate(-50%, -50%);
+        z-index: -1;
+        pointer-events: none;
+      }
 
-    function atualizarContadores() {
-      document.getElementById('countFogo').textContent = contadores['🔥'];
-      document.getElementById('countFesta').textContent = contadores['🎉'];
-      document.getElementById('countDancarino').textContent = contadores['🕺'];
-      localStorage.setItem('reacoes', JSON.stringify(contadores));
-    }
+      #convite {
+        position: relative;
+        max-width: 600px;
+        margin: 0 auto 3rem auto;
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 20px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        text-align: center;
+        color: #0056b3;
+        z-index: 10;
+      }
 
-    function animarReacao(emoji) {
-      const anim = document.createElement('div');
-      anim.classList.add('animacao-reacao');
-      anim.textContent = emoji;
-      const x = Math.random() * (window.innerWidth - 50) + 25;
-      const y = window.innerHeight - 100;
-      anim.style.left = `${x}px`;
-      anim.style.top = `${y}px`;
-      document.body.appendChild(anim);
-      setTimeout(() => anim.remove(), 2000);
-    }
+      #convite h1 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        color: #0056b3;
+      }
 
-    document.querySelectorAll('.reacao-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const emoji = btn.getAttribute('data-emoji');
-        contadores[emoji]++;
-        atualizarContadores();
-        animarReacao(emoji);
+      .contador {
+        font-size: 1.3rem;
+        font-weight: bold;
+        margin-bottom: 1.5rem;
+        letter-spacing: 2px;
+      }
+
+      .detalhes {
+        margin-top: 1rem;
+        font-size: 1.1rem;
+        line-height: 1.6;
+        color: #003366;
+      }
+
+      .botao {
+        margin-top: 1rem;
+        display: inline-block;
+        background-color: #0056b3;
+        color: white;
+        padding: 0.8rem 1.5rem;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+        cursor: pointer;
+        user-select: none;
+        margin-right: 10px;
+      }
+
+      .botao:hover {
+        background-color: #003366;
+      }
+
+      .reacoes-container {
+        margin-top: 1rem;
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        flex-wrap: wrap;
+      }
+
+      .reacao-btn {
+        font-size: 2rem;
+        cursor: pointer;
+        background: transparent;
+        border: none;
+        transition: transform 0.2s ease;
+      }
+
+      .reacao-btn:hover {
+        transform: scale(1.3);
+      }
+
+      .contador-reacoes {
+        margin-top: 1rem;
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        font-weight: bold;
+        font-size: 1.1rem;
+      }
+
+      .animacao-reacao {
+        position: fixed;
+        font-size: 2.5rem;
+        pointer-events: none;
+        animation: subirFade 2s forwards;
+        z-index: 9999;
+        text-shadow: 0 0 5px #00000099;
+      }
+
+      @keyframes subirFade {
+        0% {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+        100% {
+          opacity: 0;
+          transform: translateY(-100px) scale(1.5);
+        }
+      }
+
+      #popup-nome {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.8);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        color: white;
+        font-family: "Segoe UI", sans-serif;
+      }
+
+      #mensagem-boasvindas {
+        position: fixed;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 2rem;
+        font-weight: bold;
+        background: #fff;
+        padding: 1rem 2rem;
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        display: none;
+        z-index: 9998;
+        color: #0056b3;
+      }
+
+      input#nome-usuario {
+        font-size: 1.2rem;
+        padding: 0.5rem 1rem;
+        border-radius: 10px;
+        border: none;
+        margin-top: 1rem;
+      }
+
+      button#confirmar {
+        margin-top: 1rem;
+        font-size: 1rem;
+        padding: 0.5rem 1rem;
+        border-radius: 10px;
+        border: none;
+        background: #ffd700;
+        color: #000;
+        cursor: pointer;
+        font-weight: bold;
+      }
+
+      /* Frase explicativa acima das reações */
+      #frase-interacao {
+        margin-top: 2rem;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #003366;
+        text-align: center;
+      }
+
+      /* Container dos botões confirm, calendario e mapa */
+      #botoes-abaixo {
+        margin-top: 2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="popup-nome">
+      <h2>Digite seu nome para continuar:</h2>
+      <input id="nome-usuario" type="text" placeholder="Seu nome..." />
+      <button id="confirmar" onclick="confirmarNome()">OK</button>
+    </div>
+
+    <div id="mensagem-boasvindas"></div>
+    <canvas id="confetti-canvas"></canvas>
+
+    <div id="bday-central">Bday do Bibiano! 🍻</div>
+
+    <div id="convite">
+      <h1>🎉✨ Julho está logo ali... é mês de comemorar junto comigo! ✨🎉</h1>
+
+      <div class="contador" id="contador">Carregando contador...</div>
+
+      <p style="margin-top: 1rem">
+        🔥 <strong>Estilo Americano:</strong> Traga meio quilo de carne, seu
+        narguile e a bebida que não pode faltar!<br />
+        <em>(Só assim garantimos a farra completa! 😄💨🍻)</em>
+      </p>
+
+      <div class="detalhes">
+        📅 <strong>Data:</strong> 19 de Julho de 2025 - Sábado <br />
+        🕒 <strong>Horário:</strong> Das 13h00 às 21h00<br />
+        📍 <strong>Local:</strong> Av. Herman Teles Ribeiro, 811, Vila
+        Romanópolis, Ferraz de Vasconcelos - SP
+      </div>
+
+      <p style="margin-top: 1.5rem">
+        Se recebeu esse convite, já sabe: você é importante demais pra essa
+        festa!<br />
+        Então, conto com a sua presença para prestigiar meu aniversário em uma
+        tardezinha com muito pagode, forró e funk! 🎶💃🏽🕺🏽
+      </p>
+
+      <!-- Frase explicativa -->
+      <div id="frase-interacao">
+        Faça uma interação para mostrar que está animado para a festa.
+      </div>
+
+      <!-- Botões de reação -->
+      <div class="reacoes-container">
+        <button class="reacao-btn" data-emoji="🔥">🔥</button>
+        <button class="reacao-btn" data-emoji="🎉">🎉</button>
+        <button class="reacao-btn" data-emoji="🕺">🕺</button>
+      </div>
+
+      <div class="contador-reacoes" id="contadorReacoes">
+        🔥 <span id="countFogo">0</span> 🎉 <span id="countFesta">0</span> 🕺
+        <span id="countDancarino">0</span>
+      </div>
+
+      <!-- Botões confirm, calendário e mapa abaixo das interações -->
+      <div id="botoes-abaixo">
+        <a
+          class="botao"
+          href="https://wa.me/5511953305987?text=Valeu,%20Pedro!%20Presença%20confirmada!%20👏%20Nos%20vemos%20lá!"
+          target="_blank"
+          >✅ Confirmar Presença</a
+        >
+        <a
+          class="botao"
+          href="data:text/calendar;charset=utf8,BEGIN:VCALENDAR%0AVERSION:2.0%0ABEGIN:VEVENT%0AURL:https://www.google.com/maps/place/Av.+Herman+Teles+Ribeiro,+811,+Vila+Roman%C3%B3polis,+Ferraz+de+Vasconcelos+-+SP%0ADTSTART:20250719T160000Z%0ADTEND:20250719T220000Z%0ASUMMARY:Aniversário do Pedro%0ADESCRIPTION:Venha comemorar comigo!%0ALOCATION:Av. Herman Teles Ribeiro, 811, Vila Romanópolis, Ferraz de Vasconcelos - SP%0AEND:VEVENT%0AEND:VCALENDAR"
+          download="aniversario-pedro.ics"
+          >📅 Adicionar ao Calendário</a
+        >
+        <a
+          class="botao"
+          href="https://www.google.com/maps/dir/?api=1&destination=Av.%20Herman%20Teles%20Ribeiro%2C%20811%2C%20Vila%20Roman%C3%B3polis%2C%20Ferraz%20de%20Vasconcelos%20-%20SP"
+          target="_blank"
+          >📍 Como Chegar</a
+        >
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script>
+      function confirmarNome() {
+        const nome = document.getElementById("nome-usuario").value.trim();
+        if (nome) {
+          document.getElementById("popup-nome").style.display = "none";
+          confetti({ particleCount: 120, spread: 90, origin: { y: 0.6 } });
+
+          const msg = document.getElementById("mensagem-boasvindas");
+          msg.innerText = `Parabéns, ${nome}! Você é meu convidado!`;
+          msg.style.display = "block";
+
+          setTimeout(() => {
+            msg.style.display = "none";
+          }, 3000);
+        }
+      }
+
+      document
+        .getElementById("nome-usuario")
+        .addEventListener("keyup", function (event) {
+          if (event.key === "Enter") confirmarNome();
+        });
+
+      function atualizarContador() {
+        const festa = new Date("2025-07-19T14:00:00");
+        const agora = new Date();
+        const diff = festa - agora;
+
+        if (diff <= 0) {
+          document.getElementById("contador").innerHTML =
+            "🎉 A festa já começou! 🎉";
+          clearInterval(timer);
+          return;
+        }
+
+        const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const horas = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const minutos = Math.floor((diff / (1000 * 60)) % 60);
+        const segundos = Math.floor((diff / 1000) % 60);
+
+        document.getElementById(
+          "contador"
+        ).innerHTML = `${dias}d : ${horas}h : ${minutos}m : ${segundos}s`;
+      }
+
+      const contadores = JSON.parse(localStorage.getItem("reacoes")) || {
+        "🔥": 0,
+        "🎉": 0,
+        "🕺": 0,
+      };
+
+      function atualizarContadores() {
+        document.getElementById("countFogo").textContent = contadores["🔥"];
+        document.getElementById("countFesta").textContent = contadores["🎉"];
+        document.getElementById("countDancarino").textContent =
+          contadores["🕺"];
+        localStorage.setItem("reacoes", JSON.stringify(contadores));
+      }
+
+      function animarReacao(emoji) {
+        const anim = document.createElement("div");
+        anim.classList.add("animacao-reacao");
+        anim.textContent = emoji;
+        const x = Math.random() * (window.innerWidth - 50) + 25;
+        const y = window.innerHeight - 100;
+        anim.style.left = `${x}px`;
+        anim.style.top = `${y}px`;
+        document.body.appendChild(anim);
+        setTimeout(() => anim.remove(), 2000);
+      }
+
+      document.querySelectorAll(".reacao-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const emoji = btn.getAttribute("data-emoji");
+          contadores[emoji]++;
+          atualizarContadores();
+          animarReacao(emoji);
+        });
       });
-    });
 
-    atualizarContadores();
-    atualizarContador();
-    const timer = setInterval(atualizarContador, 1000);
-  </script>
-
-</body>
+      atualizarContadores();
+      atualizarContador();
+      const timer = setInterval(atualizarContador, 1000);
+    </script>
+  </body>
 </html>
-
-
-
